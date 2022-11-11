@@ -1,0 +1,23 @@
+/* Much of this will be commented out code of me trying to mess with CSS to get a specific style/look that I am wanting */
+
+
+/* #background {
+    background-color: dark-grey;
+} */
+
+/* Want dark-grey background for automatic dark mode */
+
+/* * {
+    color: black;
+} */
+
+/* html {
+    background-color: grey;
+} */
+
+
+
+/* Created background with darker color, the all-white body background hurt my eyes */
+body {
+    background-color: #2f4961ff;
+}
