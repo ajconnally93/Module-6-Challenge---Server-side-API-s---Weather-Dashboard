@@ -1,3 +1,7 @@
+// WORKS BUT: PREVIOUSLY SEARCHED CITIES DON'T DISPLAY. SOME COLORS AREN'T WORKING.
+
+
+
 // empty array and string to be filled in later
 let history = [];
 let lastCity = "";
@@ -36,11 +40,11 @@ let getWeather = function(city) {
 
 let submitHandler = function(event) {
     event.preventDefault();
-    let cityName = $('#cityName').val();
+    let cityName = $('#cityname').val();
     if (cityName) {
         getWeather(cityName);
         // clears search input
-        $('#cityName').val("");
+        $('#cityname').val("");
     } else {
         alert("Error. Please enter a city name.")
     }
