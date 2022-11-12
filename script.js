@@ -104,3 +104,49 @@ let displayWeather = function(weatherData) {
     lastCity = weatherData.name;
     saveSearchHistory(weatherData.name);
 };
+
+let saveSearchHistory = function (city) {
+    // creates empty array and string if local storage is empty
+    if (!history.includes(city)) {
+        history.pushState(city);
+
+        $('#search-history').append("<a href='#' class='list-group-item list-group-item-action' id='" + city + "'>" + city + "</a>");
+    }
+
+    localStorage.setItem('weatherSearchHistory', JSON.stringify(history));
+
+    localStorage.setItem('lastCity', JSON.stringify(lastCity));
+
+    loadSearchHistory();
+};
+
+
+let loadSearchHistory = function() {
+    history = JSON.parse(localStorage.getItem('weatherSearchHistory'));
+    lastCity = JSON.parse(localStorage.getItem('lastCity'));
+    // creates empty array and string if nothing is in local storage
+    if (!history) {
+        history = []
+    } if (!lastCity) {
+        lastCity = ""
+    }
+
+    $('#search-history').empty();
+
+    for (i=0; i < history.length; i++) {
+        $("#search-history").append("<a href='#' class='list-group-item list-group-item-action' id='" + history[i] + "'>" + history[i] + "</a>");
+    }
+};
+
+loadSearchHistory();
+
+if (lastCity != "") {
+    getWeather(lastCity);
+}
+
+$('#search-form').submit(submitHandler);
+
+$('#search-history').on('click', function(event) {
+    let previousCity = $(event.target).closest("a").attr("id");
+    getWeather(previousCity);
+});
