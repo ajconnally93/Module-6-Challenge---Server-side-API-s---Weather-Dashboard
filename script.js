@@ -1,11 +1,9 @@
-// WORKS BUT: PREVIOUSLY SEARCHED CITIES DON'T DISPLAY. SOME COLORS AREN'T WORKING.
-
-
-
 // empty array and string to be filled in later
 let history = [];
 let lastCity = "";
-const apiKey = "afd214452d5095d525a44dde2fd98431";
+
+// Manually typing apiKey instead of using this variable, kept causing issues with formatting
+// const apiKey = "afd214452d5095d525a44dde2fd98431";
 
 // base URL
 // https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
@@ -14,10 +12,9 @@ const apiKey = "afd214452d5095d525a44dde2fd98431";
 // console.log(moment().format('dddd'));
 // console.log($());
 
+// retrieves Weather API data for later
 let getWeather = function(city) {
-    // Need to fix apiUrl
     let apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=afd214452d5095d525a44dde2fd98431&units=imperial";
-    // Need to fix API link
     fetch(apiUrl)
         .then(function(response) {
             if (response.ok) {
@@ -27,6 +24,7 @@ let getWeather = function(city) {
             } else {
                 alert("ERROR: " + response.statusText);
             }
+
         console.log(apiUrl);
         console.log("test test test");
     })
@@ -38,6 +36,7 @@ let getWeather = function(city) {
     })
 };
 
+// cityName will be the value typed in by the user in the 'Search for a City' form
 let submitHandler = function(event) {
     event.preventDefault();
     let cityName = $('#cityname').val();
@@ -52,9 +51,9 @@ let submitHandler = function(event) {
 
 
 // need to fix API link. Other console logs work properly.
-// getWeather(Birmingham);
+// FIXED. manually type in API key in link instead of concatenating with a variable to avoid formatting issues
 
-// need askBCS help to finish filling this in
+// Uses JQuery to grab HTML ID's and then append the weatherData retrieved from the API into the HTML
 let displayWeather = function(weatherData) {
 
     $("#main-city-name").text(weatherData.name + " (" + dayjs(weatherData.dt * 1000).format("MM/DD/YYYY") + ") ").append(`<img src="https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png"></img>`);
@@ -67,18 +66,6 @@ let displayWeather = function(weatherData) {
         .then(function(response) {
             response.json().then(function(data) {
                 $("#uv-box").text(data.value);
-
-                if(data.value >= 11) {
-                    $("#uv-box").css("background-color", "purple")
-                } else if (data.value < 11 && data.value >= 8) {
-                    $("#uv-box").css("background-color", "red")
-                } else if (data.value < 8 && data.value >= 6) {
-                    $("#uv-box").css("background-color", "orange")
-                } else if (data.value < 6 && data.value >= 3) {
-                    $("#uv-box").css("background-color", "yellow")
-                } else {
-                    $("#uv-box").css("background-color", "green")
-                }      
             })
         });
 
@@ -109,18 +96,16 @@ let displayWeather = function(weatherData) {
     saveSearchHistory(weatherData.name);
 };
 
+// Passes through the last city value searched as weatherData.name in displayWeather function
 let saveSearchHistory = function (city) {
     // creates empty array and string if local storage is empty
     if (!history.includes(city)) {
-        history.pushState(city);
+        history.push(city);
 
         $('#search-history').append("<a href='#' class='list-group-item list-group-item-action' id='" + city + "'>" + city + "</a>");
     }
-
     localStorage.setItem('weatherSearchHistory', JSON.stringify(history));
-
     localStorage.setItem('lastCity', JSON.stringify(lastCity));
-
     loadSearchHistory();
 };
 
@@ -150,6 +135,7 @@ if (lastCity != "") {
 
 $('#search-form').submit(submitHandler);
 
+// Allows user to click on a previously searched city to pull up its weather again
 $('#search-history').on('click', function(event) {
     let previousCity = $(event.target).closest("a").attr("id");
     getWeather(previousCity);
