@@ -81,7 +81,7 @@ let displayWeather = function(weatherData) {
                         <div class="card-body p-1">
                             <h5 class="card-title">` + dayjs(data.list[i].dt * 1000).format("MM/DD/YYYY") + `</h5>
                             <img src="https://openweathermap.org/img/wn/` + data.list[i].weather[0].icon + `.png" alt="rain">
-                            <p class="card-text">Temp: ` + data.list[i].main.temp + `</p>
+                            <p class="card-text">Temp: ` + data.list[i].main.temp.toFixed(1) + `</p>
                             <p class="card-text">Humidity: ` + data.list[i].main.humidity + `</p>
                         </div>
                     </div>
